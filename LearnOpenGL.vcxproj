@@ -233,6 +233,7 @@
       <AdditionalIncludeDirectories>;C:\Users\Bruno\vcpkg\installed\x64-windows\include;C:\OpenGL\include;C:\Users\Bruno\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="src\graphics\shader.cpp" />
     <ClCompile Include="src\main.cpp">
       <AssemblerOutput>NoListing</AssemblerOutput>
       <AssemblerListingLocation>LearnOpenGL\x64\Release\</AssemblerListingLocation>
@@ -309,6 +310,9 @@
       <AdditionalIncludeDirectories>;C:\Users\Bruno\vcpkg\installed\x64-windows\include;C:\OpenGL\include;C:\Users\Bruno\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\graphics\shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
