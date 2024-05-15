@@ -3,7 +3,6 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <string>
 #include <glad/glad.h>
 
 int shader::success_ = 0;
@@ -92,4 +91,24 @@ shader::shader(const char* vertex_path, const char* fragment_path)
     // delete the shaders as they're linked into our program now and no longer necessary
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
+}
+
+void shader::use() const
+{
+    glUseProgram(id_);
+}
+
+void shader::set_uniform(const std::string& name, const bool value) const
+{
+    glUniform1i(glGetUniformLocation(id_, name.c_str()), static_cast<int>(value));
+}
+
+void shader::set_uniform(const std::string& name, const int value) const
+{
+    glUniform1i(glGetUniformLocation(id_, name.c_str()), value);
+}
+
+void shader::set_uniform(const std::string& name, const float value) const
+{
+    glUniform1f(glGetUniformLocation(id_, name.c_str()), value);
 }
