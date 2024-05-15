@@ -84,12 +84,7 @@ unsigned int shader::link_program(const unsigned int vertex_shader, const unsign
 shader::shader(const char* vertex_path, const char* fragment_path)
 {
     const auto vertex_code = read_file(vertex_path);
-
-    std::cout << "Vertex code: " << vertex_code.c_str() << '\n';
-
     const auto fragment_code = read_file(fragment_path);
-
-    std::cout << "Fragment code: " << fragment_code.c_str() << '\n';
 
     const auto vertex_shader = compile_shader(vertex, vertex_code.c_str());
     const auto fragment_shader = compile_shader(fragment, fragment_code.c_str());
