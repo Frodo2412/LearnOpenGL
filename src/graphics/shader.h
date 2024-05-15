@@ -8,12 +8,9 @@ enum shader_type
     fragment
 };
 
-class shader
+class shader final
 {
     unsigned int id_;
-
-    static int success_;
-    static char info_log_[512];
 
     static unsigned int compile_shader(shader_type type, const char* source);
     static unsigned int link_program(unsigned int vertex_shader, unsigned int fragment_shader);

@@ -5,9 +5,6 @@
 #include <sstream>
 #include <glad/glad.h>
 
-int shader::success_ = 0;
-char shader::info_log_[512];
-
 auto read_file(const char* shader_path)
 {
     std::string shader_code;
@@ -36,6 +33,7 @@ auto read_file(const char* shader_path)
 unsigned int shader::compile_shader(const shader_type type, const char* source)
 {
     unsigned int shader = 0;
+    int success;
 
     switch (type)
     {
@@ -48,13 +46,15 @@ unsigned int shader::compile_shader(const shader_type type, const char* source)
     }
 
     glShaderSource(shader, 1, &source, nullptr);
-    glCompileShader(vertex);
+    glCompileShader(shader);
     // print compile errors if any
-    glGetShaderiv(vertex, GL_COMPILE_STATUS, &success_);
-    if (!success_)
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    if (!success)
     {
-        glGetShaderInfoLog(vertex, 512, nullptr, info_log_);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << info_log_ << '\n';
+        char info_log[512];
+        glGetShaderInfoLog(shader, 512, nullptr, info_log);
+        const char* type_str = type == vertex ? "VERTEX" : "FRAGMENT";
+        std::cerr << "ERROR::SHADER::" << type_str << "::COMPILATION_FAILED\n" << info_log << '\n';
     }
 
     return shader;
@@ -64,15 +64,18 @@ unsigned int shader::link_program(const unsigned int vertex_shader, const unsign
 {
     // shader Program
     const auto id = glCreateProgram();
+    int success;
+
     glAttachShader(id, vertex_shader);
     glAttachShader(id, fragment_shader);
     glLinkProgram(id);
     // print linking errors if any
-    glGetProgramiv(id, GL_LINK_STATUS, &success_);
-    if (!success_)
+    glGetProgramiv(id, GL_LINK_STATUS, &success);
+    if (!success)
     {
-        glGetProgramInfoLog(id, 512, nullptr, info_log_);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << info_log_ << '\n';
+        char info_log[512];
+        glGetProgramInfoLog(id, 512, nullptr, info_log);
+        std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << info_log << '\n';
     }
 
     return id;
@@ -81,7 +84,12 @@ unsigned int shader::link_program(const unsigned int vertex_shader, const unsign
 shader::shader(const char* vertex_path, const char* fragment_path)
 {
     const auto vertex_code = read_file(vertex_path);
+
+    std::cout << "Vertex code: " << vertex_code.c_str() << '\n';
+
     const auto fragment_code = read_file(fragment_path);
+
+    std::cout << "Fragment code: " << fragment_code.c_str() << '\n';
 
     const auto vertex_shader = compile_shader(vertex, vertex_code.c_str());
     const auto fragment_shader = compile_shader(fragment, fragment_code.c_str());
