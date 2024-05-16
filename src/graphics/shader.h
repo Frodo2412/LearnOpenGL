@@ -1,15 +1,14 @@
 ﻿#pragma once
 #include <string>
 
-
-enum shader_type
-{
-    vertex,
-    fragment
-};
-
 class shader final
 {
+    enum shader_type
+    {
+        vertex,
+        fragment
+    };
+
     unsigned int id_;
 
     static unsigned int compile_shader(shader_type type, const char* source);

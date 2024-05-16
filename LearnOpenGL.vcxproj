@@ -234,6 +234,8 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="src\graphics\shader.cpp" />
+    <ClCompile Include="src\graphics\texture.cpp" />
+    <ClCompile Include="src\graphics\vertex.cpp" />
     <ClCompile Include="src\main.cpp">
       <AssemblerOutput>NoListing</AssemblerOutput>
       <AssemblerListingLocation>LearnOpenGL\x64\Release\</AssemblerListingLocation>
@@ -313,8 +315,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\graphics\shader.h" />
+    <ClInclude Include="src\graphics\texture.h" />
+    <ClInclude Include="src\graphics\vertex.h" />
+    <ClInclude Include="src\sbt_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\textures\container.jpg" />
     <Content Include="shaders\basic_fragment_shader.glsl" />
     <Content Include="shaders\basic_vertex_shader.glsl" />
   </ItemGroup>
