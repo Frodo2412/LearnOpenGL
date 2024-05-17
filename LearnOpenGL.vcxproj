@@ -157,6 +157,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\geometry\matrix4.cpp" />
+    <ClCompile Include="src\geometry\vector3.cpp" />
+    <ClCompile Include="src\geometry\vector4.cpp" />
     <ClCompile Include="src\glad.c">
       <AssemblerOutput>NoListing</AssemblerOutput>
       <AssemblerListingLocation>LearnOpenGL\x64\Release\</AssemblerListingLocation>
@@ -233,6 +236,7 @@
       <AdditionalIncludeDirectories>;C:\Users\Bruno\vcpkg\installed\x64-windows\include;C:\OpenGL\include;C:\Users\Bruno\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="src\graphics\camera.cpp" />
     <ClCompile Include="src\graphics\shader.cpp" />
     <ClCompile Include="src\graphics\texture.cpp" />
     <ClCompile Include="src\graphics\vertex.cpp" />
@@ -312,12 +316,26 @@
       <AdditionalIncludeDirectories>;C:\Users\Bruno\vcpkg\installed\x64-windows\include;C:\OpenGL\include;C:\Users\Bruno\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="src\transformations\identity.cpp" />
+    <ClCompile Include="src\transformations\rotation.cpp" />
+    <ClCompile Include="src\transformations\scale.cpp" />
+    <ClCompile Include="src\transformations\transformation.cpp" />
+    <ClCompile Include="src\transformations\translation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\geometry\matrix4.h" />
+    <ClInclude Include="src\geometry\vector3.h" />
+    <ClInclude Include="src\geometry\vector4.h" />
+    <ClInclude Include="src\graphics\camera.h" />
     <ClInclude Include="src\graphics\shader.h" />
     <ClInclude Include="src\graphics\texture.h" />
     <ClInclude Include="src\graphics\vertex.h" />
     <ClInclude Include="src\sbt_image.h" />
+    <ClInclude Include="src\transformations\identity.h" />
+    <ClInclude Include="src\transformations\rotation.h" />
+    <ClInclude Include="src\transformations\scale.h" />
+    <ClInclude Include="src\transformations\transformation.h" />
+    <ClInclude Include="src\transformations\translation.h" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\textures\container.jpg" />

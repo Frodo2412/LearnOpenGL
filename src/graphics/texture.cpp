@@ -3,6 +3,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../sbt_image.h"
 
+#include <iostream>
+#include <glad/glad.h>
+
 texture::texture(char const* file_path)
 {
     glGenTextures(1, &id_);
