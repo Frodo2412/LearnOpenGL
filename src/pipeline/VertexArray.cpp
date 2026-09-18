@@ -1,34 +1,34 @@
-#include "vertex_array.h"
+#include "VertexArray.h"
 
 #include <cassert>
 #include <utility>
 
 #include "glad/glad.h"
 
-namespace {
-    bool is_integer(attribute_type const type) {
-        return type == attribute_type::int32 || type == attribute_type::uint32;
-    }
+static bool is_integer(attribute_type const type) {
+    return type == attribute_type::int32 || type == attribute_type::uint32;
 }
 
-vertex_array::vertex_array() {
+VertexArray::VertexArray() {
     glGenVertexArrays(1, &id_);
 }
 
-vertex_array::~vertex_array() {
-    if (id_ != 0) glDeleteVertexArrays(1, &id_);
+VertexArray::~VertexArray() {
+    if (id_ != 0)
+        glDeleteVertexArrays(1, &id_);
 }
 
-vertex_array::vertex_array(vertex_array &&other) noexcept
+VertexArray::VertexArray(VertexArray &&other) noexcept
     : id_(std::exchange(other.id_, 0)),
       buffers_(std::move(other.buffers_)),
       vertex_count_(std::exchange(other.vertex_count_, 0)) {
     other.buffers_.clear();
 }
 
-vertex_array &vertex_array::operator=(vertex_array &&other) noexcept {
+VertexArray &VertexArray::operator=(VertexArray &&other) noexcept {
     if (this != &other) {
-        if (id_ != 0) glDeleteVertexArrays(1, &id_);
+        if (id_ != 0)
+            glDeleteVertexArrays(1, &id_);
         id_ = std::exchange(other.id_, 0);
         buffers_ = std::move(other.buffers_);
         other.buffers_.clear();
@@ -37,13 +37,13 @@ vertex_array &vertex_array::operator=(vertex_array &&other) noexcept {
     return *this;
 }
 
-void vertex_array::add_buffer(vertex_buffer buffer, std::vector<vertex_attribute> const &layout,
+void VertexArray::add_buffer(VertexBuffer buffer, std::vector<VertexAttribute> const &layout,
                               std::size_t const stride) {
     assert(id_ != 0 && "add_buffer on a moved-from vertex_array");
     assert(stride > 0 && "stride must be non-zero");
 
     glBindVertexArray(id_);
-    vertex_buffer::bind(buffer);
+    VertexBuffer::bind(buffer);
 
     for (auto const &[location, components, offset, type, normalized]: layout) {
         auto const *const pointer = reinterpret_cast<void const *>(offset);
@@ -61,7 +61,7 @@ void vertex_array::add_buffer(vertex_buffer buffer, std::vector<vertex_attribute
     buffers_.push_back(std::move(buffer));
 }
 
-void vertex_array::draw(primitive const mode) const {
+void VertexArray::draw(primitive const mode) const {
     assert(id_ != 0 && "draw on a moved-from vertex_array");
     glBindVertexArray(id_);
     glDrawArrays(static_cast<GLenum>(mode), 0, static_cast<GLsizei>(vertex_count_));

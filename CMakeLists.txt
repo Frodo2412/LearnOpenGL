@@ -6,9 +6,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
 add_executable(LearnOpenGL ${SOURCES} src/glad.c
-        src/pipeline/vertex_buffer.h
-        src/pipeline/vertex_buffer.cpp
-        src/pipeline/vertex_array.h
+        src/pipeline/VertexBuffer.h
+        src/pipeline/VertexBuffer.cpp
+        src/pipeline/VertexArray.h
         src/stb_image.cpp
         src/files/FileSystem.h
         src/graphics/Shader.cpp)

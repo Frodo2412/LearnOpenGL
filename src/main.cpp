@@ -10,7 +10,7 @@
 #include "files/FileSystem.h"
 #include "graphics/Shader.h"
 #include "graphics/Texture.h"
-#include "pipeline/vertex_array.h"
+#include "pipeline/VertexArray.h"
 
 static void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
@@ -117,8 +117,8 @@ int main() {
     glEnable(GL_DEPTH_TEST);
 
     {
-        vertex_array cube;
-        cube.add_buffer(vertex_buffer(vertices, sizeof(vertices)),
+        VertexArray cube;
+        cube.add_buffer(VertexBuffer(vertices, sizeof(vertices)),
                         {{0, 3, 0}, {1, 2, 3 * sizeof(float)}}, 5 * sizeof(float));
 
         Texture container("assets/textures/container.jpg");

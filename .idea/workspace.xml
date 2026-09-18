@@ -28,8 +28,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="feat: refactor to use vertex pipeline APIs">
+    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="feat: uniform API to handle textures">
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pipeline/vertex_array.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/pipeline/VertexArray.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pipeline/vertex_array.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/pipeline/VertexArray.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pipeline/vertex_buffer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/pipeline/VertexBuffer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pipeline/vertex_buffer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/pipeline/VertexBuffer.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,6 +198,7 @@
     <MESSAGE value="refactor: cleanup shader class" />
     <MESSAGE value="feat: draw many squares" />
     <MESSAGE value="feat: refactor to use vertex pipeline APIs" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: refactor to use vertex pipeline APIs" />
+    <MESSAGE value="feat: uniform API to handle textures" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: uniform API to handle textures" />
   </component>
 </project>

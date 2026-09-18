@@ -2,33 +2,33 @@
 
 #include <cstddef>
 
-enum class buffer_usage {
+enum class BufferUsage {
     static_draw = 0x88E4, // written once, drawn many times
     dynamic_draw = 0x88E8, // written often, drawn many times
     stream_draw = 0x88E0 // written once, drawn a few times
 };
 
 // Owns a GL_ARRAY_BUFFER object. Move-only: the GL buffer is deleted on destruction.
-class vertex_buffer {
+class VertexBuffer {
     unsigned int id_ = 0;
     std::size_t size_ = 0; // bytes uploaded to the GPU
 
 public:
     // Creates a buffer and uploads `size` bytes from `data`. Leaves it bound to GL_ARRAY_BUFFER.
-    vertex_buffer(void const *data, std::size_t size, buffer_usage usage = buffer_usage::static_draw);
+    VertexBuffer(void const *data, std::size_t size, BufferUsage usage = BufferUsage::static_draw);
 
-    ~vertex_buffer();
+    ~VertexBuffer();
 
-    vertex_buffer(vertex_buffer const &) = delete;
+    VertexBuffer(VertexBuffer const &) = delete;
 
-    vertex_buffer &operator=(vertex_buffer const &) = delete;
+    VertexBuffer &operator=(VertexBuffer const &) = delete;
 
-    vertex_buffer(vertex_buffer &&other) noexcept;
+    VertexBuffer(VertexBuffer &&other) noexcept;
 
-    vertex_buffer &operator=(vertex_buffer &&other) noexcept;
+    VertexBuffer &operator=(VertexBuffer &&other) noexcept;
 
     // The bound buffer is global GL state (GL_ARRAY_BUFFER), not per-instance state.
-    static void bind(vertex_buffer const &buffer);
+    static void bind(VertexBuffer const &buffer);
 
     [[nodiscard]] std::size_t get_size() const;
 };
