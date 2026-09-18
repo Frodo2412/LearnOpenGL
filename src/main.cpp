@@ -14,10 +14,6 @@
 
 static void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
-static void mouse_callback(GLFWwindow *window, double xpos, double ypos);
-
-static void scroll_callback(GLFWwindow *window, double xoffset, double yoffset);
-
 static void processInput(GLFWwindow *window);
 
 // settings
@@ -35,13 +31,6 @@ static glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),
                                     glm::vec3(0.0f, 0.0f, 0.0f),
                                     glm::vec3(0.0f, 1.0f, 0.0f));
 static auto cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-float yaw = -90.0f;
-float pitch = 0;
-float lastX = 400, lastY = 300;
-static glm::vec3 direction = glm::vec3();
-bool firstMouse = true;
-auto projection = glm::mat4(1.0f);
-float fov = 45.0f;
 
 // time
 static double deltaTime = 0.0f; // Time between current frame and last frame
@@ -54,7 +43,6 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
 
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -70,8 +58,6 @@ int main() {
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetScrollCallback(window, scroll_callback);
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -79,8 +65,6 @@ int main() {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // build and compile our shader zprogram
     // ------------------------------------
@@ -180,8 +164,10 @@ int main() {
             auto model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
             view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
+            auto projection = glm::mat4(1.0f);
             model = glm::rotate(model, (float) glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
             view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+            projection = glm::perspective(glm::radians(45.0f), (float) SCR_WIDTH / (float) SCR_HEIGHT, 0.1f, 100.0f);
             // retrieve the matrix uniform locations
             const unsigned int modelLoc = glGetUniformLocation(ourShader.id, "model");
             const unsigned int viewLoc = glGetUniformLocation(ourShader.id, "view");
@@ -234,48 +220,4 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     // make sure the viewport matches the new window dimensions; note that width and
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
-}
-
-void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
-    if (firstMouse) // initially set to true
-    {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
-        return;
-    }
-
-    // Calculate camera rotation
-
-
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates range from bottom to top
-    lastX = xpos;
-    lastY = ypos;
-
-    const float sensitivity = 0.1f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-
-    yaw += xoffset;
-    pitch += yoffset;
-
-    if (pitch > 89.0f)
-        pitch = 89.0f;
-    if (pitch < -89.0f)
-        pitch = -89.0f;
-
-    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    direction.y = sin(glm::radians(pitch));
-    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    cameraFront = glm::normalize(direction);
-}
-
-void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
-    fov -= (float) yoffset;
-    if (fov < 1.0f)
-        fov = 1.0f;
-    if (fov > 45.0f)
-        fov = 45.0f;
-    projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);
 }

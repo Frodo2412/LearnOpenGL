@@ -28,7 +28,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="feat: camera movement">
+    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="refactor: cleanup">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
@@ -196,7 +196,6 @@
     <MESSAGE value="feat: refactor to use vertex pipeline APIs" />
     <MESSAGE value="feat: uniform API to handle textures" />
     <MESSAGE value="refactor: cleanup" />
-    <MESSAGE value="feat: camera movement" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: camera movement" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: cleanup" />
   </component>
 </project>
