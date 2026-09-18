@@ -25,7 +25,7 @@ constexpr unsigned int SCR_HEIGHT = 600;
 static auto camera = FlyingCamera();
 
 // time
-static double deltaTime = 0.0f; // Time between current frame and last frame
+static float deltaTime = 0.0f; // Time between current frame and last frame
 static double lastFrame = 0.0f; // Time of last frame
 
 int main() {
@@ -197,15 +197,14 @@ void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    float cameraSpeed = 2.5f * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.cameraPos += cameraSpeed * camera.cameraFront;
+        camera.update_position(deltaTime, camera.cameraFront);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.cameraPos -= cameraSpeed * camera.cameraFront;
+        camera.update_position(deltaTime, -camera.cameraFront);
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.cameraPos -= glm::normalize(glm::cross(camera.cameraFront, camera.cameraUp)) * cameraSpeed;
+        camera.update_position(deltaTime, -camera.cameraRight);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.cameraPos += glm::normalize(glm::cross(camera.cameraFront, camera.cameraUp)) * cameraSpeed;
+        camera.update_position(deltaTime, camera.cameraRight);
 }
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
