@@ -28,9 +28,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="refactor: shader construction logic">
-      <change beforePath="$PROJECT_DIR$/src/graphics/Shader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/Shader.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphics/Shader.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/Shader.h" afterDir="false" />
+    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="refactor: cleanup shader class">
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -82,7 +80,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "C/C++ File.main.cpp.executor": "Run",
-    "CMake Application.LearnOpenGL.executor": "Run",
+    "CMake Application.LearnOpenGL.executor": "Profiler",
     "CidrDebugProfileConversion": "true",
     "RunOnceActivity.RadMigrateCodeStyle": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -192,17 +190,7 @@
     <MESSAGE value="feat: refactor out some pipeline stuff" />
     <MESSAGE value="feat: fast forward to part 6 so we can start with transformations" />
     <MESSAGE value="refactor: shader construction logic" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: shader construction logic" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/main.cpp</url>
-          <line>120</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="refactor: cleanup shader class" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: cleanup shader class" />
   </component>
 </project>
