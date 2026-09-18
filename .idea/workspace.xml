@@ -19,6 +19,7 @@
   <component name="CMakeRunConfigurationManager">
     <generated>
       <config projectName="LearnOpenGL" targetName="LearnOpenGL" />
+      <config projectName="LearnOpenGL" targetName="glm" />
     </generated>
   </component>
   <component name="CMakeSettings">
@@ -27,19 +28,39 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/pipeline/vertex_buffer.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pipeline/vertex_buffer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/LearnOpenGL.iml" beforeDir="false" />
+    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="feat: refactor out some pipeline stuff">
+      <change afterPath="$PROJECT_DIR$/assets/textures/awesomeface.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/files/FileSystem.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/stb_image.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LearnOpenGL.sln" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LearnOpenGL.vcxproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LearnOpenGL.vcxproj.filters" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphics/shader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/shader.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphics/texture.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/texture.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/manual-link/libglfw.3.dylib" beforeDir="false" afterPath="$PROJECT_DIR$/lib/manual-link/glfw/libglfw.3.dylib" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/manual-link/libglfw3.a" beforeDir="false" afterPath="$PROJECT_DIR$/lib/manual-link/glfw/libglfw3.a" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shaders/basic_fragment_shader.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/shaders/basic_fragment_shader.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shaders/basic_vertex_shader.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/shaders/basic_vertex_shader.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geometry/matrix4.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geometry/matrix4.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geometry/vector3.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geometry/vector3.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geometry/vector4.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geometry/vector4.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphics/shader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/Shader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphics/shader.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/Shader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphics/texture.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/texture.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pipeline/vertex_buffer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/pipeline/vertex_buffer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sbt_image.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/stb_image.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/transformations/identity.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/transformations/identity.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/transformations/rotation.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/transformations/rotation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/transformations/scale.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/transformations/scale.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/transformations/transformation.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/transformations/transformation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/transformations/translation.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/transformations/translation.h" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +73,7 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -101,10 +123,18 @@
     "cidr.known.project.marker": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "git-widget-placeholder": "master",
+    "node.js.detected.package.jshint": "true",
+    "node.js.selected.package.jshint": "",
     "nodejs_package_manager_path": "npm",
     "python.packages.toolwindow.project.migrated.to.right.top.v2": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/textures" />
+      <recent name="$PROJECT_DIR$/lib/manual-link/glfw" />
+    </key>
+  </component>
   <component name="RunManager" selected="CMake Application.LearnOpenGL">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
@@ -128,6 +158,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="glm" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="LearnOpenGL" TARGET_NAME="glm" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="main.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="LearnOpenGL" TARGET_NAME="main.cpp" CONFIG_NAME="main.cpp">
       <option name="sourceFile" value="src/main.cpp" />
       <method v="2">
@@ -137,6 +172,7 @@
     <list>
       <item itemvalue="C/C++ File.main.cpp" />
       <item itemvalue="CMake Application.LearnOpenGL" />
+      <item itemvalue="CMake Application.glm" />
     </list>
     <recent_temporary>
       <list>
@@ -180,5 +216,20 @@
     <isAutomaticFoundErrors value="true" />
     <isAutomaticReloadCMake value="true" />
     <isAutomaticBootstrapAfterUpdate value="false" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat: refactor out some pipeline stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: refactor out some pipeline stuff" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/main.cpp</url>
+          <line>119</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

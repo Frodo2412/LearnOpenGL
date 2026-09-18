@@ -15,7 +15,9 @@ namespace {
             glBindBuffer(GL_ARRAY_BUFFER, id);
         }
 
-        ~binding_guard() { glBindBuffer(GL_ARRAY_BUFFER, previous_); }
+        ~binding_guard() {
+            glBindBuffer(GL_ARRAY_BUFFER, previous_);
+        }
 
         binding_guard(binding_guard const &) = delete;
 
@@ -32,7 +34,8 @@ vertex_buffer::vertex_buffer(void const *data, std::size_t const size, buffer_us
 }
 
 vertex_buffer::~vertex_buffer() {
-    if (id_ != 0) glDeleteBuffers(1, &id_);
+    if (id_ != 0)
+        glDeleteBuffers(1, &id_);
 }
 
 vertex_buffer::vertex_buffer(vertex_buffer &&other) noexcept
@@ -41,7 +44,8 @@ vertex_buffer::vertex_buffer(vertex_buffer &&other) noexcept
 
 vertex_buffer &vertex_buffer::operator=(vertex_buffer &&other) noexcept {
     if (this != &other) {
-        if (id_ != 0) glDeleteBuffers(1, &id_);
+        if (id_ != 0)
+            glDeleteBuffers(1, &id_);
         id_ = std::exchange(other.id_, 0);
         size_ = std::exchange(other.size_, 0);
     }
