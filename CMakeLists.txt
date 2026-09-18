@@ -10,7 +10,8 @@ add_executable(LearnOpenGL ${SOURCES} src/glad.c
         src/pipeline/vertex_buffer.cpp
         src/pipeline/vertex_array.h
         src/stb_image.cpp
-        src/files/FileSystem.h)
+        src/files/FileSystem.h
+        src/graphics/Shader.cpp)
 
 configure_file(configuration/root_directory.h.in configuration/root_directory.h)
 target_include_directories(LearnOpenGL PRIVATE include src ${CMAKE_BINARY_DIR}/configuration)

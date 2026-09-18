@@ -171,8 +171,8 @@ int main() {
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
         projection = glm::perspective(glm::radians(45.0f), (float) SCR_WIDTH / (float) SCR_HEIGHT, 0.1f, 100.0f);
         // retrieve the matrix uniform locations
-        unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "model");
-        unsigned int viewLoc = glGetUniformLocation(ourShader.ID, "view");
+        unsigned int modelLoc = glGetUniformLocation(ourShader.id, "model");
+        unsigned int viewLoc = glGetUniformLocation(ourShader.id, "view");
         // pass them to the shaders (3 different ways)
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
