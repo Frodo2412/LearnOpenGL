@@ -6,24 +6,25 @@
 #include "graphics/shader.h"
 #include "graphics/texture.h"
 #include "graphics/vertex.h"
+#include "pipeline/vertex_array.h"
+#include "pipeline/vertex_buffer.h"
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void process_input(GLFWwindow* window);
+static void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+
+static void process_input(GLFWwindow *window);
 
 // settings
 constexpr unsigned int scr_width = 800;
 constexpr unsigned int scr_height = 600;
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(scr_width, scr_height, "LearnOpenGL", nullptr, nullptr);
-    if (window == nullptr)
-    {
+    GLFWwindow *window = glfwCreateWindow(scr_width, scr_height, "LearnOpenGL", nullptr, nullptr);
+    if (window == nullptr) {
         std::cout << "Failed to create GLFW window\n";
         glfwTerminate();
         return -1;
@@ -31,7 +32,7 @@ int main(int argc, char* argv[])
     glfwMakeContextCurrent(window);
 
     // ReSharper disable once CppCStyleCast
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) // NOLINT(clang-diagnostic-cast-function-type-strict)
+    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) // NOLINT(clang-diagnostic-cast-function-type-strict)
     {
         std::cout << "Failed to initialize GLAD\n";
         return -1;
@@ -57,57 +58,41 @@ int main(int argc, char* argv[])
         0, 1, 3, // first triangle
         1, 2, 3 // second triangle
     };
-    unsigned int vbo, vao, ebo;
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &vbo);
-    glGenBuffers(1, &ebo);
-
-    glBindVertexArray(vao);
-
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    // color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-    // texture coord attribute
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
-
-    glBindTexture(GL_TEXTURE_2D, texture.get_id());
-
-    while (!glfwWindowShouldClose(window))
+    // GL objects owned by RAII types must be destroyed while the context is still alive,
+    // so everything that touches GL lives in this scope, before glfwTerminate().
     {
-        // input
-        // -----
-        process_input(window);
+        vertex_array quad;
+        quad.add_buffer(vertex_buffer(vertices, sizeof(vertices)),
+                        {
+                            {.location = 0, .components = 3, .offset = 0 * sizeof(float)}, // position
+                            {.location = 1, .components = 3, .offset = 3 * sizeof(float)}, // color
+                            {.location = 2, .components = 2, .offset = 6 * sizeof(float)} // texture coord
+                        },
+                        sizeof(vertex));
+        quad.set_indices(indices, 6);
 
-        // render
-        // ------
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glBindTexture(GL_TEXTURE_2D, texture.get_id());
 
-        // render the triangle
-        shader_program.use();
-        glBindVertexArray(vao);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        while (!glfwWindowShouldClose(window)) {
+            // input
+            // -----
+            process_input(window);
 
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
+            // render
+            // ------
+            glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
 
-    // optional: de-allocate all resources once they've outlived their purpose:
-    // ------------------------------------------------------------------------
-    glDeleteVertexArrays(1, &vao);
-    glDeleteBuffers(1, &vbo);
+            // render the quad
+            shader_program.use();
+            quad.draw();
+
+            // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+            // -------------------------------------------------------------------------------
+            glfwSwapBuffers(window);
+            glfwPollEvents();
+        }
+    } // quad destroyed here
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
@@ -115,13 +100,11 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-void framebuffer_size_callback(GLFWwindow* window, const int width, const int height)
-{
+void framebuffer_size_callback(GLFWwindow *window, const int width, const int height) {
     glViewport(0, 0, width, height);
 }
 
-void process_input(GLFWwindow* window)
-{
+void process_input(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 }

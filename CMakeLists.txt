@@ -5,7 +5,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
-add_executable(LearnOpenGL ${SOURCES} src/glad.c)
+add_executable(LearnOpenGL ${SOURCES} src/glad.c
+        src/pipeline/vertex_buffer.h
+        src/pipeline/vertex_buffer.cpp
+        src/pipeline/vertex_array.h)
 
 target_include_directories(LearnOpenGL PRIVATE include src)
 
@@ -23,4 +26,10 @@ target_link_libraries(LearnOpenGL PRIVATE
 set_target_properties(LearnOpenGL PROPERTIES
     XCODE_GENERATE_SCHEME ON
     VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+
+# Make shaders/assets reachable from the binary's directory (CLion runs from the build dir)
+add_custom_command(TARGET LearnOpenGL POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/shaders $<TARGET_FILE_DIR:LearnOpenGL>/shaders
+    COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:LearnOpenGL>/assets
 )

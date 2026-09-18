@@ -5,14 +5,12 @@
 #include <sstream>
 #include <glad/glad.h>
 
-auto read_file(const char* shader_path)
-{
+static auto read_file(const char *shader_path) {
     std::string shader_code;
     std::ifstream shader_file;
     // ensure ifstream objects can throw exceptions:
     shader_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-    try
-    {
+    try {
         // open files
         shader_file.open(shader_path);
         std::stringstream shader_stream;
@@ -22,46 +20,40 @@ auto read_file(const char* shader_path)
         shader_file.close();
         // convert stream into string
         shader_code = shader_stream.str();
-    }
-    catch (std::ifstream::failure& e)
-    {
+    } catch (std::ifstream::failure &e) {
         std::cerr << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ" << e.what() << '\n';
     }
     return shader_code;
 }
 
-unsigned int shader::compile_shader(const shader_type type, const char* source)
-{
+unsigned int shader::compile_shader(const shader_type type, const char *source) {
     unsigned int shader = 0;
     int success;
 
-    switch (type)
-    {
-    case vertex:
-        shader = glCreateShader(GL_VERTEX_SHADER);
-        break;
-    case fragment:
-        shader = glCreateShader(GL_FRAGMENT_SHADER);
-        break;
+    switch (type) {
+        case vertex:
+            shader = glCreateShader(GL_VERTEX_SHADER);
+            break;
+        case fragment:
+            shader = glCreateShader(GL_FRAGMENT_SHADER);
+            break;
     }
 
     glShaderSource(shader, 1, &source, nullptr);
     glCompileShader(shader);
     // print compile errors if any
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
+    if (!success) {
         char info_log[512];
         glGetShaderInfoLog(shader, 512, nullptr, info_log);
-        const char* type_str = type == vertex ? "VERTEX" : "FRAGMENT";
+        const char *type_str = type == vertex ? "VERTEX" : "FRAGMENT";
         std::cerr << "ERROR::SHADER::" << type_str << "::COMPILATION_FAILED\n" << info_log << '\n';
     }
 
     return shader;
 }
 
-unsigned int shader::link_program(const unsigned int vertex_shader, const unsigned int fragment_shader)
-{
+unsigned int shader::link_program(const unsigned int vertex_shader, const unsigned int fragment_shader) {
     // shader Program
     const auto id = glCreateProgram();
     int success;
@@ -71,8 +63,7 @@ unsigned int shader::link_program(const unsigned int vertex_shader, const unsign
     glLinkProgram(id);
     // print linking errors if any
     glGetProgramiv(id, GL_LINK_STATUS, &success);
-    if (!success)
-    {
+    if (!success) {
         char info_log[512];
         glGetProgramInfoLog(id, 512, nullptr, info_log);
         std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << info_log << '\n';
@@ -81,8 +72,7 @@ unsigned int shader::link_program(const unsigned int vertex_shader, const unsign
     return id;
 }
 
-shader::shader(const char* vertex_path, const char* fragment_path)
-{
+shader::shader(const char *vertex_path, const char *fragment_path) {
     const auto vertex_code = read_file(vertex_path);
     const auto fragment_code = read_file(fragment_path);
 
@@ -96,22 +86,18 @@ shader::shader(const char* vertex_path, const char* fragment_path)
     glDeleteShader(fragment_shader);
 }
 
-void shader::use() const
-{
+void shader::use() const {
     glUseProgram(id_);
 }
 
-void shader::set_uniform(const std::string& name, const bool value) const
-{
+void shader::set_uniform(const std::string &name, const bool value) const {
     glUniform1i(glGetUniformLocation(id_, name.c_str()), static_cast<int>(value));
 }
 
-void shader::set_uniform(const std::string& name, const int value) const
-{
+void shader::set_uniform(const std::string &name, const int value) const {
     glUniform1i(glGetUniformLocation(id_, name.c_str()), value);
 }
 
-void shader::set_uniform(const std::string& name, const float value) const
-{
+void shader::set_uniform(const std::string &name, const float value) const {
     glUniform1f(glGetUniformLocation(id_, name.c_str()), value);
 }
