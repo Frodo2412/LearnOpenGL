@@ -7,6 +7,7 @@
 
 #include <iostream>
 
+#include "camera/FlyingCamera.h"
 #include "files/FileSystem.h"
 #include "graphics/Shader.h"
 #include "graphics/Texture.h"
@@ -21,16 +22,7 @@ constexpr unsigned int SCR_WIDTH = 800;
 constexpr unsigned int SCR_HEIGHT = 600;
 
 // camera stuff
-static auto cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-static auto cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-static auto cameraDirection = glm::normalize(cameraPos - cameraTarget);
-static auto up = glm::vec3(0.0f, 1.0f, 0.0f);
-static auto cameraRight = glm::normalize(glm::cross(up, cameraDirection));
-static glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
-static glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),
-                                    glm::vec3(0.0f, 0.0f, 0.0f),
-                                    glm::vec3(0.0f, 1.0f, 0.0f));
-static auto cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+static auto camera = FlyingCamera();
 
 // time
 static double deltaTime = 0.0f; // Time between current frame and last frame
@@ -162,18 +154,18 @@ int main() {
 
             // create transformations
             auto model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-            view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+            camera.view = glm::lookAt(camera.cameraPos, camera.cameraPos + camera.cameraFront, camera.cameraUp);
 
             auto projection = glm::mat4(1.0f);
             model = glm::rotate(model, (float) glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-            view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+            camera.view = glm::translate(camera.view, glm::vec3(0.0f, 0.0f, -3.0f));
             projection = glm::perspective(glm::radians(45.0f), (float) SCR_WIDTH / (float) SCR_HEIGHT, 0.1f, 100.0f);
             // retrieve the matrix uniform locations
             const unsigned int modelLoc = glGetUniformLocation(ourShader.id, "model");
             const unsigned int viewLoc = glGetUniformLocation(ourShader.id, "view");
             // pass them to the shaders (3 different ways)
             glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-            glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
+            glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &camera.view[0][0]);
             // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
             ourShader.setMat4("projection", projection);
 
@@ -207,13 +199,13 @@ void processInput(GLFWwindow *window) {
 
     float cameraSpeed = 2.5f * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraFront;
+        camera.cameraPos += cameraSpeed * camera.cameraFront;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraFront;
+        camera.cameraPos -= cameraSpeed * camera.cameraFront;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        camera.cameraPos -= glm::normalize(glm::cross(camera.cameraFront, camera.cameraUp)) * cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        camera.cameraPos += glm::normalize(glm::cross(camera.cameraFront, camera.cameraUp)) * cameraSpeed;
 }
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
