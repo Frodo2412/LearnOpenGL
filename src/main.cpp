@@ -20,6 +20,22 @@ static void processInput(GLFWwindow *window);
 constexpr unsigned int SCR_WIDTH = 800;
 constexpr unsigned int SCR_HEIGHT = 600;
 
+// camera stuff
+static auto cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+static auto cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+static auto cameraDirection = glm::normalize(cameraPos - cameraTarget);
+static auto up = glm::vec3(0.0f, 1.0f, 0.0f);
+static auto cameraRight = glm::normalize(glm::cross(up, cameraDirection));
+static glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
+static glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),
+                                    glm::vec3(0.0f, 0.0f, 0.0f),
+                                    glm::vec3(0.0f, 1.0f, 0.0f));
+static auto cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+
+// time
+static double deltaTime = 0.0f; // Time between current frame and last frame
+static double lastFrame = 0.0f; // Time of last frame
+
 int main() {
     // glfw: initialize and configure
     // ------------------------------
@@ -34,7 +50,7 @@ int main() {
 
     // glfw window creation
     // --------------------
-    GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", nullptr, NULL);
+    GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", nullptr, nullptr);
     if (window == nullptr) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -132,10 +148,13 @@ int main() {
         ourShader.setTexture("texture1", container);
         ourShader.setTexture("texture2", face);
 
-
         // render loop
         // -----------
         while (!glfwWindowShouldClose(window)) {
+            const double currentFrame = glfwGetTime();
+            deltaTime = currentFrame - lastFrame;
+            lastFrame = currentFrame;
+
             processInput(window);
 
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -143,14 +162,15 @@ int main() {
 
             // create transformations
             auto model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-            auto view = glm::mat4(1.0f);
+            view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+
             auto projection = glm::mat4(1.0f);
             model = glm::rotate(model, (float) glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
             view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
             projection = glm::perspective(glm::radians(45.0f), (float) SCR_WIDTH / (float) SCR_HEIGHT, 0.1f, 100.0f);
             // retrieve the matrix uniform locations
-            unsigned int modelLoc = glGetUniformLocation(ourShader.id, "model");
-            unsigned int viewLoc = glGetUniformLocation(ourShader.id, "view");
+            const unsigned int modelLoc = glGetUniformLocation(ourShader.id, "model");
+            const unsigned int viewLoc = glGetUniformLocation(ourShader.id, "view");
             // pass them to the shaders (3 different ways)
             glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
             glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
@@ -184,6 +204,16 @@ int main() {
 void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    float cameraSpeed = 2.5f * deltaTime;
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        cameraPos += cameraSpeed * cameraFront;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        cameraPos -= cameraSpeed * cameraFront;
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 }
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
