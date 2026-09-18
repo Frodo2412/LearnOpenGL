@@ -28,10 +28,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="feat: fast forward to part 6 so we can start with transformations">
-      <change afterPath="$PROJECT_DIR$/src/graphics/Shader.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="refactor: shader construction logic">
+      <change beforePath="$PROJECT_DIR$/src/graphics/Shader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/Shader.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/graphics/Shader.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/Shader.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
@@ -193,7 +191,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: refactor out some pipeline stuff" />
     <MESSAGE value="feat: fast forward to part 6 so we can start with transformations" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: fast forward to part 6 so we can start with transformations" />
+    <MESSAGE value="refactor: shader construction logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: shader construction logic" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

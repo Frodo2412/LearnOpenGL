@@ -137,7 +137,7 @@ int main() {
 
     // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
     // -------------------------------------------------------------------------------------------
-    ourShader.use();
+    Shader::use(ourShader);
     ourShader.setInt("texture1", 0);
     ourShader.setInt("texture2", 1);
 
@@ -161,7 +161,7 @@ int main() {
         glBindTexture(GL_TEXTURE_2D, texture2);
 
         // activate shader
-        ourShader.use();
+        Shader::use(ourShader);
 
         // create transformations
         auto model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
