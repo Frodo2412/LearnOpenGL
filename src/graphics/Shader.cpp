@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
 
 static GLenum gl_shader_type(const ShaderType type) {
     switch (type) {
@@ -42,6 +43,12 @@ void Shader::use(const Shader shader) {
 
 void Shader::setBool(const std::string &name, const bool value) const {
     glUniform1i(glGetUniformLocation(id, name.c_str()), static_cast<int>(value));
+}
+
+void Shader::setTexture(const std::string &name, const Texture &texture) const {
+    if (texture.get_unit() < 0)
+        throw std::logic_error("Texture must be bound before assigning it to sampler '" + name + "'");
+    setInt(name, texture.get_unit());
 }
 
 void Shader::setInt(const std::string &name, const int value) const {

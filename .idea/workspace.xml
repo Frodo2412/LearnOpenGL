@@ -28,13 +28,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="feat: draw many squares">
-      <change beforePath="$PROJECT_DIR$/src/graphics/Shader.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphics/Shader.h" afterDir="false" />
+    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="feat: refactor to use vertex pipeline APIs">
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pipeline/vertex_array.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/pipeline/vertex_array.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pipeline/vertex_array.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/pipeline/vertex_array.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pipeline/vertex_buffer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/pipeline/vertex_buffer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pipeline/vertex_buffer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/pipeline/vertex_buffer.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -197,6 +192,7 @@
     <MESSAGE value="refactor: shader construction logic" />
     <MESSAGE value="refactor: cleanup shader class" />
     <MESSAGE value="feat: draw many squares" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: draw many squares" />
+    <MESSAGE value="feat: refactor to use vertex pipeline APIs" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: refactor to use vertex pipeline APIs" />
   </component>
 </project>

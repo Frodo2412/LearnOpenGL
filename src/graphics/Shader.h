@@ -4,6 +4,9 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
+#include "Texture.h"
+
+#include <stdexcept>
 #include <string>
 #include <fstream>
 
@@ -21,6 +24,9 @@ public:
 
     void setBool(const std::string &name, bool value) const;
     void setInt(const std::string &name, int value) const;
+    // Points the sampler `name` at the unit `texture` was bound to. Bind it first with Texture::bind.
+    // Throws std::logic_error if the texture was never bound.
+    void setTexture(const std::string &name, const Texture &texture) const;
     void setFloat(const std::string &name, float value) const;
 
     void setVec2(const std::string &name, const glm::vec2 &value) const;
