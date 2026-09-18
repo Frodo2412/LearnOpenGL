@@ -28,8 +28,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="refactor: move camera to its own class">
+    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="refactor: update camera position in place">
+      <change afterPath="$PROJECT_DIR$/src/utils/Clock.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/Clock.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/camera/FlyingCamera.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/camera/FlyingCamera.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/camera/FlyingCamera.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/camera/FlyingCamera.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
@@ -95,7 +98,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "feature/camera__class",
+    "git-widget-placeholder": "#1 on feature/camera__class",
     "node.js.detected.package.jshint": "true",
     "node.js.selected.package.jshint": "",
     "nodejs_package_manager_path": "npm",
@@ -200,6 +203,7 @@
     <MESSAGE value="feat: uniform API to handle textures" />
     <MESSAGE value="refactor: cleanup" />
     <MESSAGE value="refactor: move camera to its own class" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: move camera to its own class" />
+    <MESSAGE value="refactor: update camera position in place" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: update camera position in place" />
   </component>
 </project>

@@ -24,10 +24,6 @@ constexpr unsigned int SCR_HEIGHT = 600;
 // camera stuff
 static auto camera = FlyingCamera();
 
-// time
-static float deltaTime = 0.0f; // Time between current frame and last frame
-static double lastFrame = 0.0f; // Time of last frame
-
 int main() {
     // glfw: initialize and configure
     // ------------------------------
@@ -143,10 +139,6 @@ int main() {
         // render loop
         // -----------
         while (!glfwWindowShouldClose(window)) {
-            const double currentFrame = glfwGetTime();
-            deltaTime = currentFrame - lastFrame;
-            lastFrame = currentFrame;
-
             processInput(window);
 
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -154,11 +146,8 @@ int main() {
 
             // create transformations
             auto model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-            camera.view = glm::lookAt(camera.cameraPos, camera.cameraPos + camera.cameraFront, camera.cameraUp);
-
             auto projection = glm::mat4(1.0f);
             model = glm::rotate(model, (float) glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-            camera.view = glm::translate(camera.view, glm::vec3(0.0f, 0.0f, -3.0f));
             projection = glm::perspective(glm::radians(45.0f), (float) SCR_WIDTH / (float) SCR_HEIGHT, 0.1f, 100.0f);
             // retrieve the matrix uniform locations
             const unsigned int modelLoc = glGetUniformLocation(ourShader.id, "model");
@@ -197,17 +186,21 @@ void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
+    auto displacement = glm::vec3(0.0f, 0.0f, 0.0f);
+
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.update_position(deltaTime, camera.cameraFront);
+        displacement += camera.cameraFront;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.update_position(deltaTime, -camera.cameraFront);
+        displacement -= camera.cameraFront;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.update_position(deltaTime, -camera.cameraRight);
+        displacement -= camera.cameraRight;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.update_position(deltaTime, camera.cameraRight);
+        displacement += camera.cameraRight;
+
+    camera.update_camera(displacement);
 }
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+void framebuffer_size_callback(GLFWwindow *window, const int width, const int height) {
     // make sure the viewport matches the new window dimensions; note that width and
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);

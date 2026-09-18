@@ -8,7 +8,7 @@
 class FlyingCamera {
 public:
     float speed = 2.5f;
-    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f),
+    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 6.0f),
             cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f),
             cameraDirection = glm::normalize(cameraPos - cameraTarget),
             up = glm::vec3(0.0f, 1.0f, 0.0f),
@@ -22,7 +22,8 @@ public:
 
     FlyingCamera();
 
-    void update_position(float delta_time, glm::vec3 displacement);
+    void update_position(glm::vec3 displacement);
+    void update_camera(glm::vec3 displacement);
 };
 
 
