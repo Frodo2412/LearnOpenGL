@@ -17,7 +17,7 @@ public:
 
     Shader(const char *vertexPath, const char *fragmentPath);
 
-    static void use(Shader shader);
+    static void use(Shader shader); // Static since only a single shader can be active at a time
 
     void setBool(const std::string &name, bool value) const;
     void setInt(const std::string &name, int value) const;
