@@ -1,19 +1,24 @@
-//
-// Created by Bruno Lemus on 18/9/26.
-//
-
 #include "FlyingCamera.h"
 
-#include "utils/Clock.h"
+#include <GLFW/glfw3.h>
 
-FlyingCamera::FlyingCamera() = default;
+#include "glm/ext/matrix_transform.hpp"
 
-void FlyingCamera::update_position(const glm::vec3 displacement) {
-    const float delta_time = Clock::get_elapsed_time();
-    cameraPos += speed * delta_time * displacement;
+void FlyingCamera::update(const float delta_time) {
+    pos += speed * delta_time * poll_camera_input();
 }
 
-void FlyingCamera::update_camera(const glm::vec3 displacement) {
-    update_position(displacement);
-    view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+glm::vec3 FlyingCamera::poll_camera_input() {
+    GLFWwindow *window = glfwGetCurrentContext();
+
+    auto displacement = glm::vec3(0.0f);
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) displacement += front;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) displacement -= front;
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) displacement += right;
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) displacement -= right;
+    return displacement;
+}
+
+glm::mat4 FlyingCamera::view() const {
+    return glm::lookAt(pos, pos + front, up);
 }

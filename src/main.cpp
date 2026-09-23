@@ -6,12 +6,14 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
+#include <memory>
 
 #include "camera/FlyingCamera.h"
 #include "files/FileSystem.h"
 #include "graphics/Shader.h"
 #include "graphics/Texture.h"
 #include "pipeline/VertexArray.h"
+#include "utils/Clock.h"
 
 static void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
@@ -22,7 +24,7 @@ constexpr unsigned int SCR_WIDTH = 800;
 constexpr unsigned int SCR_HEIGHT = 600;
 
 // camera stuff
-static auto camera = FlyingCamera();
+static std::unique_ptr<Camera> camera = std::make_unique<FlyingCamera>();
 
 int main() {
     // glfw: initialize and configure
@@ -46,6 +48,7 @@ int main() {
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    camera->setViewport(SCR_WIDTH, SCR_HEIGHT);
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -54,7 +57,7 @@ int main() {
         return -1;
     }
 
-    // build and compile our shader zprogram
+    // build and compile our shader program
     // ------------------------------------
     const Shader ourShader(FileSystem::getPath("shaders/basic_vertex_shader.glsl").c_str(),
                            FileSystem::getPath("shaders/basic_fragment_shader.glsl").c_str());
@@ -140,23 +143,16 @@ int main() {
         // -----------
         while (!glfwWindowShouldClose(window)) {
             processInput(window);
+            camera->update(Clock::get_elapsed_time());
 
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             // create transformations
             auto model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-            auto projection = glm::mat4(1.0f);
             model = glm::rotate(model, (float) glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-            projection = glm::perspective(glm::radians(45.0f), (float) SCR_WIDTH / (float) SCR_HEIGHT, 0.1f, 100.0f);
-            // retrieve the matrix uniform locations
-            const unsigned int modelLoc = glGetUniformLocation(ourShader.id, "model");
-            const unsigned int viewLoc = glGetUniformLocation(ourShader.id, "view");
-            // pass them to the shaders (3 different ways)
-            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-            glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &camera.view[0][0]);
-            // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
-            ourShader.setMat4("projection", projection);
+            ourShader.setMat4("model", model);
+            camera->apply(ourShader);
 
             // render container
             for (unsigned int i = 0; i < 10; i++) {
@@ -185,23 +181,11 @@ int main() {
 void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-
-    auto displacement = glm::vec3(0.0f, 0.0f, 0.0f);
-
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        displacement += camera.cameraFront;
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        displacement -= camera.cameraFront;
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        displacement -= camera.cameraRight;
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        displacement += camera.cameraRight;
-
-    camera.update_camera(displacement);
 }
 
 void framebuffer_size_callback(GLFWwindow *window, const int width, const int height) {
     // make sure the viewport matches the new window dimensions; note that width and
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
+    if (camera) camera->setViewport(width, height);
 }
