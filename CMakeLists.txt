@@ -11,7 +11,10 @@ add_executable(LearnOpenGL ${SOURCES} src/glad.c
         src/pipeline/VertexArray.h
         src/stb_image.cpp
         src/files/FileSystem.h
-        src/graphics/Shader.cpp)
+        src/graphics/Shader.cpp
+        src/utils/Clock.cpp
+        src/utils/Clock.h
+        src/camera/Directions.h)
 
 configure_file(configuration/root_directory.h.in configuration/root_directory.h)
 target_include_directories(LearnOpenGL PRIVATE include src ${CMAKE_BINARY_DIR}/configuration)

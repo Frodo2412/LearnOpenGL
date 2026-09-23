@@ -6,11 +6,14 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
+#include <memory>
 
+#include "camera/FlyingCamera.h"
 #include "files/FileSystem.h"
 #include "graphics/Shader.h"
 #include "graphics/Texture.h"
 #include "pipeline/VertexArray.h"
+#include "utils/Clock.h"
 
 static void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
@@ -25,27 +28,10 @@ constexpr unsigned int SCR_WIDTH = 800;
 constexpr unsigned int SCR_HEIGHT = 600;
 
 // camera stuff
-static auto cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-static auto cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-static auto cameraDirection = glm::normalize(cameraPos - cameraTarget);
-static auto up = glm::vec3(0.0f, 1.0f, 0.0f);
-static auto cameraRight = glm::normalize(glm::cross(up, cameraDirection));
-static glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
-static glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),
-                                    glm::vec3(0.0f, 0.0f, 0.0f),
-                                    glm::vec3(0.0f, 1.0f, 0.0f));
-static auto cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-float yaw = -90.0f;
-float pitch = 0;
-float lastX = 400, lastY = 300;
-static glm::vec3 direction = glm::vec3();
-bool firstMouse = true;
-auto projection = glm::mat4(1.0f);
-float fov = 45.0f;
-
-// time
-static double deltaTime = 0.0f; // Time between current frame and last frame
-static double lastFrame = 0.0f; // Time of last frame
+static std::unique_ptr<Camera> camera = std::make_unique<FlyingCamera>();
+static float lastX = SCR_WIDTH / 2.0f;
+static float lastY = SCR_HEIGHT / 2.0f;
+static bool firstMouse = true;
 
 int main() {
     // glfw: initialize and configure
@@ -54,7 +40,6 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
 
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -72,6 +57,8 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    camera->setViewport(SCR_WIDTH, SCR_HEIGHT);
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -80,9 +67,7 @@ int main() {
         return -1;
     }
 
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-    // build and compile our shader zprogram
+    // build and compile our shader program
     // ------------------------------------
     const Shader ourShader(FileSystem::getPath("shaders/basic_vertex_shader.glsl").c_str(),
                            FileSystem::getPath("shaders/basic_fragment_shader.glsl").c_str());
@@ -167,10 +152,6 @@ int main() {
         // render loop
         // -----------
         while (!glfwWindowShouldClose(window)) {
-            const double currentFrame = glfwGetTime();
-            deltaTime = currentFrame - lastFrame;
-            lastFrame = currentFrame;
-
             processInput(window);
 
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -178,18 +159,9 @@ int main() {
 
             // create transformations
             auto model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-            view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-
             model = glm::rotate(model, (float) glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-            view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-            // retrieve the matrix uniform locations
-            const unsigned int modelLoc = glGetUniformLocation(ourShader.id, "model");
-            const unsigned int viewLoc = glGetUniformLocation(ourShader.id, "view");
-            // pass them to the shaders (3 different ways)
-            glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-            glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
-            // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
-            ourShader.setMat4("projection", projection);
+            ourShader.setMat4("model", model);
+            camera->apply(ourShader);
 
             // render container
             for (unsigned int i = 0; i < 10; i++) {
@@ -218,64 +190,43 @@ int main() {
 void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-
-    float cameraSpeed = 2.5f * deltaTime;
+    const float deltaTime = Clock::get_elapsed_time();
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraFront;
+        camera->process_keyboard(Direction::FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraFront;
+        camera->process_keyboard(Direction::BACKWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        camera->process_keyboard(Direction::LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        camera->process_keyboard(Direction::RIGHT, deltaTime);
 }
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+void framebuffer_size_callback(GLFWwindow *window, const int width, const int height) {
     // make sure the viewport matches the new window dimensions; note that width and
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
+    if (camera) camera->setViewport(width, height);
 }
 
-void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
-    if (firstMouse) // initially set to true
-    {
-        lastX = xpos;
-        lastY = ypos;
+void mouse_callback(GLFWwindow *window, const double xpos, const double ypos) {
+    const auto x = static_cast<float>(xpos);
+    const auto y = static_cast<float>(ypos);
+
+    if (firstMouse) {
+        lastX = x;
+        lastY = y;
         firstMouse = false;
-        return;
     }
 
-    // Calculate camera rotation
+    const float xoffset = x - lastX;
+    const float yoffset = lastY - y; // reversed since y-coordinates go from bottom to top
 
+    lastX = x;
+    lastY = y;
 
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates range from bottom to top
-    lastX = xpos;
-    lastY = ypos;
-
-    const float sensitivity = 0.1f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-
-    yaw += xoffset;
-    pitch += yoffset;
-
-    if (pitch > 89.0f)
-        pitch = 89.0f;
-    if (pitch < -89.0f)
-        pitch = -89.0f;
-
-    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    direction.y = sin(glm::radians(pitch));
-    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    cameraFront = glm::normalize(direction);
+    camera->process_mouse_movement(xoffset, yoffset);
 }
 
-void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
-    fov -= (float) yoffset;
-    if (fov < 1.0f)
-        fov = 1.0f;
-    if (fov > 45.0f)
-        fov = 45.0f;
-    projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);
+void scroll_callback(GLFWwindow *window, double xoffset, const double yoffset) {
+    camera->process_mouse_scroll(static_cast<float>(yoffset));
 }
