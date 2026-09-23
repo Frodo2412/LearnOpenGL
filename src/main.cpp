@@ -17,6 +17,10 @@
 
 static void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
+static void mouse_callback(GLFWwindow *window, double xpos, double ypos);
+
+static void scroll_callback(GLFWwindow *window, double xoffset, double yoffset);
+
 static void processInput(GLFWwindow *window);
 
 // settings
@@ -25,6 +29,9 @@ constexpr unsigned int SCR_HEIGHT = 600;
 
 // camera stuff
 static std::unique_ptr<Camera> camera = std::make_unique<FlyingCamera>();
+static float lastX = SCR_WIDTH / 2.0f;
+static float lastY = SCR_HEIGHT / 2.0f;
+static bool firstMouse = true;
 
 int main() {
     // glfw: initialize and configure
@@ -48,6 +55,9 @@ int main() {
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     camera->setViewport(SCR_WIDTH, SCR_HEIGHT);
 
     // glad: load all OpenGL function pointers
@@ -143,7 +153,6 @@ int main() {
         // -----------
         while (!glfwWindowShouldClose(window)) {
             processInput(window);
-            camera->update(Clock::get_elapsed_time());
 
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -181,6 +190,15 @@ int main() {
 void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+    const float deltaTime = Clock::get_elapsed_time();
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        camera->process_keyboard(Direction::FORWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        camera->process_keyboard(Direction::BACKWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        camera->process_keyboard(Direction::LEFT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        camera->process_keyboard(Direction::RIGHT, deltaTime);
 }
 
 void framebuffer_size_callback(GLFWwindow *window, const int width, const int height) {
@@ -188,4 +206,27 @@ void framebuffer_size_callback(GLFWwindow *window, const int width, const int he
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
     if (camera) camera->setViewport(width, height);
+}
+
+void mouse_callback(GLFWwindow *window, const double xpos, const double ypos) {
+    const auto x = static_cast<float>(xpos);
+    const auto y = static_cast<float>(ypos);
+
+    if (firstMouse) {
+        lastX = x;
+        lastY = y;
+        firstMouse = false;
+    }
+
+    const float xoffset = x - lastX;
+    const float yoffset = lastY - y; // reversed since y-coordinates go from bottom to top
+
+    lastX = x;
+    lastY = y;
+
+    camera->process_mouse_movement(xoffset, yoffset);
+}
+
+void scroll_callback(GLFWwindow *window, double xoffset, const double yoffset) {
+    camera->process_mouse_scroll(static_cast<float>(yoffset));
 }

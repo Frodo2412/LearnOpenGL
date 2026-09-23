@@ -13,5 +13,5 @@ void Camera::setViewport(const int width, const int height) {
 }
 
 glm::mat4 Camera::projection() const {
-    return glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
+    return glm::perspective(glm::radians(fov), aspect, 0.1f, 100.0f);
 }

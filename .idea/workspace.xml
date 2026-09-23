@@ -28,8 +28,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="reafcator: move calculations into camera">
+    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="feat: movement working">
+      <change afterPath="$PROJECT_DIR$/src/camera/Directions.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/camera/Camera.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/camera/Camera.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/camera/Camera.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/camera/Camera.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/camera/FlyingCamera.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/camera/FlyingCamera.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/camera/FlyingCamera.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/camera/FlyingCamera.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
@@ -109,6 +113,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.LearnOpenGL">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="CMakeBoostTestRunConfigurationType" factoryName="Boost Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="BeforeTestRunTask" enabled="true" />
@@ -204,6 +213,7 @@
     <MESSAGE value="refactor: cleanup" />
     <MESSAGE value="refactor: move camera to its own class" />
     <MESSAGE value="refactor: update camera position in place" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: update camera position in place" />
+    <MESSAGE value="feat: movement working" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: movement working" />
   </component>
 </project>
