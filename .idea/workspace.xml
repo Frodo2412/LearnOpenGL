@@ -28,17 +28,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="refactor: cleanup">
-      <change afterPath="$PROJECT_DIR$/shaders/cube.fs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shaders/cube.vs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shaders/light.fs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shaders/light.vs" afterDir="false" />
+    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="feat: ambient light">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shaders/basic_fragment_shader.glsl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shaders/basic_vertex_shader.glsl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/camera/Camera.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/camera/Camera.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/camera/FlyingCamera.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/camera/FlyingCamera.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pipeline/VertexArray.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/pipeline/VertexArray.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pipeline/VertexArray.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/pipeline/VertexArray.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -218,6 +212,7 @@
     <MESSAGE value="feat: movement working" />
     <MESSAGE value="refactor: match tutorial code for easy follow along" />
     <MESSAGE value="refactor: cleanup" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: cleanup" />
+    <MESSAGE value="feat: ambient light" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: ambient light" />
   </component>
 </project>

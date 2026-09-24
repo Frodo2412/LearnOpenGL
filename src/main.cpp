@@ -7,6 +7,8 @@
 
 #include <iostream>
 #include <memory>
+#include <utility>
+#include <vector>
 
 #include "camera/FlyingCamera.h"
 #include "graphics/Shader.h"
@@ -121,34 +123,22 @@ int main() {
     // build and compile our shader program
     // ------------------------------------
     const Shader lighting_shader("shaders/light.vs", "shaders/light.fs");
-    Shader cube_shader("shaders/cube.vs", "shaders/cube.fs");
+    const Shader cube_shader("shaders/cube.vs", "shaders/cube.fs");
 
     glEnable(GL_DEPTH_TEST);
 
     {
-        VertexBuffer cube_geometry(vertices, sizeof(vertices), BufferUsage::static_draw);
-        unsigned int cubeVAO;
-        glGenVertexArrays(1, &cubeVAO);
+        constexpr std::size_t stride = 5 * sizeof(float);
+        std::vector<VertexAttribute> const position_layout{
+            {.location = 0, .components = 3, .offset = 0, .type = attribute_type::float32}
+        };
 
-        VertexBuffer::bind(cube_geometry);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+        VertexArray cube_vao;
+        auto cube_buffer = std::make_shared<VertexBuffer>(vertices, sizeof(vertices), BufferUsage::static_draw);
+        cube_vao.add_buffer(cube_buffer, position_layout, stride);
 
-        glBindVertexArray(cubeVAO);
-
-        // position attribute
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), static_cast<void *>(nullptr));
-        glEnableVertexAttribArray(0);
-
-        // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
-        unsigned int lightCubeVAO;
-        glGenVertexArrays(1, &lightCubeVAO);
-        glBindVertexArray(lightCubeVAO);
-
-        // we only need to bind to the VBO (to link it with glVertexAttribPointer), no need to fill it; the VBO's data already contains all we need (it's already bound, but we do it again for educational purposes)
-        VertexBuffer::bind(cube_geometry);
-
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), static_cast<void *>(nullptr));
-        glEnableVertexAttribArray(0);
+        VertexArray light_cube_vao;
+        light_cube_vao.add_buffer(cube_buffer, position_layout, stride);
 
         while (!glfwWindowShouldClose(window)) {
             const auto delta_time = Clock::get_elapsed_time();
@@ -174,8 +164,7 @@ int main() {
             lighting_shader.setMat4("model", model);
 
             // render the cube
-            glBindVertexArray(cubeVAO);
-            glDrawArrays(GL_TRIANGLES, 0, 36);
+            cube_vao.draw();
 
 
             // also draw the lamp object
@@ -187,8 +176,7 @@ int main() {
             model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
             cube_shader.setMat4("model", model);
 
-            glBindVertexArray(lightCubeVAO);
-            glDrawArrays(GL_TRIANGLES, 0, 36);
+            light_cube_vao.draw();
 
             glfwSwapBuffers(window);
             glfwPollEvents();

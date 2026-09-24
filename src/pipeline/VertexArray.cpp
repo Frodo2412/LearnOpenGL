@@ -37,13 +37,14 @@ VertexArray &VertexArray::operator=(VertexArray &&other) noexcept {
     return *this;
 }
 
-void VertexArray::add_buffer(VertexBuffer buffer, std::vector<VertexAttribute> const &layout,
+void VertexArray::add_buffer(std::shared_ptr<VertexBuffer> buffer, std::vector<VertexAttribute> const &layout,
                               std::size_t const stride) {
     assert(id_ != 0 && "add_buffer on a moved-from vertex_array");
+    assert(buffer != nullptr && "buffer must not be null");
     assert(stride > 0 && "stride must be non-zero");
 
     glBindVertexArray(id_);
-    VertexBuffer::bind(buffer);
+    VertexBuffer::bind(*buffer);
 
     for (auto const &[location, components, offset, type, normalized]: layout) {
         auto const *const pointer = reinterpret_cast<void const *>(offset);
@@ -57,7 +58,7 @@ void VertexArray::add_buffer(VertexBuffer buffer, std::vector<VertexAttribute> c
         glEnableVertexAttribArray(location);
     }
 
-    if (buffers_.empty()) vertex_count_ = buffer.get_size() / stride;
+    if (buffers_.empty()) vertex_count_ = buffer->get_size() / stride;
     buffers_.push_back(std::move(buffer));
 }
 
