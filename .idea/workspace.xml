@@ -28,15 +28,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="feat: movement working">
-      <change afterPath="$PROJECT_DIR$/src/camera/Directions.h" afterDir="false" />
+    <list default="true" id="8e3f8ee9-585f-48fe-9ce1-ff3464ed7e37" name="Changes" comment="refactor: match tutorial code for easy follow along">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/camera/Camera.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/camera/Camera.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/camera/Camera.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/camera/Camera.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/camera/FlyingCamera.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/camera/FlyingCamera.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/camera/FlyingCamera.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/camera/FlyingCamera.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +58,7 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Users/brunolemus/Projects/Personal/LearnOpenGL/src/graphics/shader.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/brunolemus/Projects/Personal/LearnOpenGL/src/main.cpp" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="unmQoenq" />
@@ -162,6 +155,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="C/C++ File.main.cpp" />
+        <item itemvalue="C/C++ File.main.cpp" />
       </list>
     </recent_temporary>
   </component>
@@ -214,6 +208,7 @@
     <MESSAGE value="refactor: move camera to its own class" />
     <MESSAGE value="refactor: update camera position in place" />
     <MESSAGE value="feat: movement working" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: movement working" />
+    <MESSAGE value="refactor: match tutorial code for easy follow along" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: match tutorial code for easy follow along" />
   </component>
 </project>

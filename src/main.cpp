@@ -62,7 +62,7 @@ int main() {
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
-    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+    if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
@@ -136,7 +136,7 @@ int main() {
     {
         VertexArray cube;
         cube.add_buffer(VertexBuffer(vertices, sizeof(vertices)),
-                        {{0, 3, 0}, {1, 2, 3 * sizeof(float)}}, 5 * sizeof(float));
+                        {{.location = 0, .components = 3, .offset = 0}, {1, 2, 3 * sizeof(float)}}, 5 * sizeof(float));
 
         Texture container("assets/textures/container.jpg");
         Texture face("assets/textures/awesomeface.png");
@@ -158,16 +158,13 @@ int main() {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             // create transformations
-            auto model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-            model = glm::rotate(model, (float) glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-            ourShader.setMat4("model", model);
             camera->apply(ourShader);
 
             // render container
             for (unsigned int i = 0; i < 10; i++) {
                 auto model = glm::mat4(1.0f);
                 model = glm::translate(model, cubePositions[i]);
-                float angle = 20.0f * i;
+                float angle = 20.0f * static_cast<float>(i);
                 model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
                 ourShader.setMat4("model", model);
 
