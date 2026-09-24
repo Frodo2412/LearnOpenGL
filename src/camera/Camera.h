@@ -7,6 +7,8 @@
 
 class Camera {
 public:
+    float Zoom = 45.0f;
+
     virtual ~Camera() = default;
 
     // Uploads the "view" and "projection" uniforms. The shader must be in use.
@@ -21,16 +23,15 @@ public:
     virtual void process_mouse_movement(float x_offset, float y_offset) {}
     virtual void process_mouse_scroll(float y_offset) {}
 
-protected:
-
     [[nodiscard]] virtual glm::mat4 view() const = 0;
+
+protected:
 
     // Perspective by default; orthographic cameras override.
     [[nodiscard]] virtual glm::mat4 projection() const;
 
     float aspect = 4.0f / 3.0f;
     float fov = 45.0f;
-
 };
 
 #endif //LEARNOPENGL_CAMERA_H

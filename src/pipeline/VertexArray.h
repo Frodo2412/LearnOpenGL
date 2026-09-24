@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <memory>
 #include <vector>
 
 #include "VertexBuffer.h"
@@ -27,12 +28,13 @@ struct VertexAttribute {
     bool normalized = false;
 };
 
-// Owns a vertex array object together with the vertex buffers it references, so the buffers
-// cannot be destroyed while the VAO still points at them.
+// Owns a vertex array object together with (shared) references to the vertex buffers it points
+// at, so a buffer cannot be destroyed while any VAO still points at it. A single buffer may be
+// shared across multiple VertexArrays (e.g. two VAOs drawing the same mesh with different shaders).
 // Move-only: the GL objects are deleted on destruction.
 class VertexArray {
     unsigned int id_ = 0;
-    std::vector<VertexBuffer> buffers_;
+    std::vector<std::shared_ptr<VertexBuffer>> buffers_;
     std::size_t vertex_count_ = 0; // taken from the first buffer added
 
 public:
@@ -48,10 +50,11 @@ public:
 
     VertexArray &operator=(VertexArray &&other) noexcept;
 
-    // Takes ownership of `buffer` and points the attributes in `layout` at it.
+    // Shares ownership of `buffer` and points the attributes in `layout` at it.
     // `stride` is the size in bytes of one vertex. The first buffer added defines the vertex count
     // (buffer size / stride). Leaves this array and the buffer bound.
-    void add_buffer(VertexBuffer buffer, std::vector<VertexAttribute> const &layout, std::size_t stride);
+    void add_buffer(std::shared_ptr<VertexBuffer> buffer, std::vector<VertexAttribute> const &layout,
+                     std::size_t stride);
 
     // Binds this array and draws its vertices with glDrawArrays.
     void draw(primitive mode = primitive::triangles) const;

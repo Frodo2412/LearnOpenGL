@@ -19,7 +19,6 @@ public:
 
     void process_mouse_scroll(float y_offset) override;
 
-protected:
     [[nodiscard]] glm::mat4 view() const override;
 
 private:
